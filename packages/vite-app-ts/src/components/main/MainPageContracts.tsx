@@ -19,8 +19,10 @@ export interface IMainPageContractsProps {
  */
 export const MainPageContracts: FC<IMainPageContractsProps> = (props) => {
   const ethersContext = useEthersContext();
-  const mainnetDai = useAppContracts('DAI', NETWORKS.mainnet.chainId);
+  // const mainnetDai = useAppContracts('DAI', NETWORKS.mainnet.chainId);
+  debugger;
   const yourContract = useAppContracts('YourContract', ethersContext.chainId);
+  const yourContractFactory = useAppContracts('YourContractFactory', ethersContext.chainId);
 
   if (ethersContext.account == null) {
     return <></>;
@@ -37,6 +39,12 @@ export const MainPageContracts: FC<IMainPageContractsProps> = (props) => {
         <GenericContract
           contractName="YourContract"
           contract={yourContract}
+          mainnetAdaptor={props.scaffoldAppProviders.mainnetAdaptor}
+          blockExplorer={props.scaffoldAppProviders.targetNetwork.blockExplorer}
+        />
+        <GenericContract
+          contractName="YourContractFactory"
+          contract={yourContractFactory}
           mainnetAdaptor={props.scaffoldAppProviders.mainnetAdaptor}
           blockExplorer={props.scaffoldAppProviders.targetNetwork.blockExplorer}
         />
@@ -57,14 +65,14 @@ export const MainPageContracts: FC<IMainPageContractsProps> = (props) => {
         {/***********
          *  ❓ Uncomment to display and interact with an external contract (DAI on mainnet):
          ********** */}
-        {
+        {/* {
           <GenericContract
             contractName="DAI"
             contract={mainnetDai}
             mainnetAdaptor={props.scaffoldAppProviders.mainnetAdaptor}
             blockExplorer={NETWORKS.mainnet.blockExplorer}
           />
-        }
+        } */}
       </>
     </>
   );

@@ -1,11 +1,10 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState, createContext } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import '~~/styles/main-page.css';
 import { useContractReader, useBalance, useEthersAdaptorFromProviderOrSigners } from 'eth-hooks';
 import { useDexEthPrice } from 'eth-hooks/dapps';
 
-import { GenericContract } from 'eth-components/ant/generic-contract';
 import { Hints, Subgraph, ExampleUI } from '~~/components/pages';
 
 import { useEventListener } from 'eth-hooks';
@@ -24,6 +23,31 @@ import {
 } from '~~/config/contractContext';
 import { asEthersAdaptor } from 'eth-hooks/functions';
 import { subgraphUri } from '~~/config/subgraphConfig';
+import CreatedContractsUI from './components/pages/ContractFactory/CreatedContractsUI';
+import { YourContractEntity } from './models/contractFactory/your-contract-entity.model';
+import { loadNonDeployedContractAbi } from './functions/loadNonDeployedAbis';
+import { InjectableAbis } from './generated/injectable-abis/injectable-abis.type';
+import { useWindowWidth } from '@react-hook/window-size';
+import { breakPointContractItemFit } from './styles/styles';
+
+export interface InnerAppContext {
+  createdContracts: YourContractEntity[] | undefined;
+  injectableAbis: InjectableAbis | undefined;
+}
+export const InnerAppContext = createContext<InnerAppContext>({
+  createdContracts: [],
+  injectableAbis: {},
+});
+
+export interface ILayoutContext {
+  windowWidth: number | undefined;
+  widthAboveContractItemFit: boolean | undefined;
+}
+
+export const LayoutContext = createContext<ILayoutContext>({
+  windowWidth: 0,
+  widthAboveContractItemFit: false,
+});
 
 export const Main: FC = () => {
   // -----------------------------
@@ -54,14 +78,52 @@ export const Main: FC = () => {
   // examples on how to get contracts
   // -----------------------------
   // init contracts
+  const factory = useAppContracts('YourContractFactory', ethersContext.chainId);
   const yourContract = useAppContracts('YourContract', ethersContext.chainId);
   const mainnetDai = useAppContracts('DAI', NETWORKS.mainnet.chainId);
 
   // keep track of a variable from the contract in the local React state:
   const purpose = useContractReader(yourContract, yourContract?.purpose, [], yourContract?.filters.SetPurpose());
+  const numberOfCreated = useContractReader(
+    factory,
+    factory?.numberOfContracts,
+    [],
+    factory?.filters.CreateYourContract()
+  );
 
-  // 📟 Listen for broadcast events
+  // 📟 Listen for broadcast events`
   const [setPurposeEvents] = useEventListener(yourContract, 'SetPurpose', 0);
+  const [createYourContractEvents] = useEventListener(factory, 'CreateYourContract', 0);
+  const [createdContracts, setCreatedContracts] = useState<YourContractEntity[]>();
+  const account = ethersContext.account;
+  useEffect(() => {
+    if (!createdContracts || createdContracts.length !== createYourContractEvents.length) {
+      setCreatedContracts(
+        createYourContractEvents
+          .map((event) => ({
+            address: event.args.contractAddress,
+            name: event.args.name,
+            time: new Date(event.args.timestamp.toNumber() * 1000),
+            creator: event.args.creator,
+            // add any other available args here
+          }))
+          .reverse() // most recent first
+      );
+    }
+  }, [createYourContractEvents, account]);
+
+  const [injectableAbis, setInjectableAbis] = useState<InjectableAbis>();
+  useEffect(() => {
+    const load = async () => {
+      const YourContract = await loadNonDeployedContractAbi('YourContract');
+      if (YourContract) {
+        setInjectableAbis({ YourContract });
+      } else {
+        console.error(`Could not find injectable abi for YourContract`);
+      }
+    };
+    load();
+  }, [setInjectableAbis]);
 
   // For more hooks, check out 🔗eth-hooks at: https://www.npmjs.com/package/eth-hooks
 
@@ -86,53 +148,64 @@ export const Main: FC = () => {
     setRoute(window.location.pathname);
   }, [setRoute]);
 
+  const innerAppContext = {
+    createdContracts,
+    injectableAbis,
+  };
+  const windowWidth = useWindowWidth();
+  const layoutContext = {
+    windowWidth,
+    widthAboveContractItemFit: windowWidth >= breakPointContractItemFit,
+  };
+
   return (
-    <div className="App">
-      <MainPageHeader scaffoldAppProviders={scaffoldAppProviders} price={ethPrice} />
+    <LayoutContext.Provider value={layoutContext}>
+      <InnerAppContext.Provider value={innerAppContext}>
+        <div className="App">
+          <MainPageHeader scaffoldAppProviders={scaffoldAppProviders} price={ethPrice} />
 
-      {/* Routes should be added between the <Switch> </Switch> as seen below */}
-      <BrowserRouter>
-        <MainPageMenu route={route} setRoute={setRoute} />
-        <Switch>
-          <Route exact path="/">
-            <MainPageContracts scaffoldAppProviders={scaffoldAppProviders} />
-          </Route>
-          {/* you can add routes here like the below examlples */}
-          <Route path="/hints">
-            <Hints
-              address={ethersContext?.account ?? ''}
-              yourCurrentBalance={yourCurrentBalance}
-              mainnetProvider={scaffoldAppProviders.mainnetAdaptor?.provider}
-              price={ethPrice}
-            />
-          </Route>
-          <Route path="/exampleui">
-            <ExampleUI
-              mainnetProvider={scaffoldAppProviders.mainnetAdaptor?.provider}
-              yourCurrentBalance={yourCurrentBalance}
-              price={ethPrice}
-            />
-          </Route>
-          <Route path="/mainnetdai">
-            {mainnetProvider != null && (
-              <GenericContract
-                contractName="DAI"
-                contract={mainnetDai}
-                mainnetAdaptor={scaffoldAppProviders.mainnetAdaptor}
-                blockExplorer={NETWORKS.mainnet.blockExplorer}
-              />
-            )}
-          </Route>
-          {/* Subgraph also disabled in MainPageMenu */}
-          {/* 
-          <Route path="/subgraph">
-            <Subgraph subgraphUri={subgraphUri} mainnetProvider={scaffoldAppProviders.mainnetAdaptor?.provider} />
-          </Route> 
-          */}
-        </Switch>
-      </BrowserRouter>
+          {/* Routes should be added between the <Switch> </Switch> as seen below */}
+          <BrowserRouter>
+            <MainPageMenu route={route} setRoute={setRoute} />
+            <div className="AppScroller">
+              <Switch>
+                <Route exact path="/">
+                  <div className="AppCenteredCol">
+                    <CreatedContractsUI />
+                  </div>
+                </Route>
+                <Route exact path="/Debug">
+                  <MainPageContracts scaffoldAppProviders={scaffoldAppProviders} />
+                </Route>
+                {/* you can add routes here like the below examlples */}
+                {/* <Route path="/hints">
+                  <Hints
+                    address={ethersContext?.account ?? ''}
+                    yourCurrentBalance={yourCurrentBalance}
+                    mainnetProvider={scaffoldAppProviders.mainnetAdaptor?.provider}
+                    price={ethPrice}
+                  />
+                </Route> */}
+                <Route path="/exampleui">
+                  <ExampleUI
+                    mainnetProvider={scaffoldAppProviders.mainnetAdaptor?.provider}
+                    yourCurrentBalance={yourCurrentBalance}
+                    price={ethPrice}
+                  />
+                </Route>
 
-      <MainPageFooter scaffoldAppProviders={scaffoldAppProviders} price={ethPrice} />
-    </div>
+                {/* Subgraph also disabled in MainPageMenu */}
+                {/* 
+                <Route path="/subgraph">
+                  <Subgraph subgraphUri={subgraphUri} mainnetProvider={scaffoldAppProviders.mainnetAdaptor?.provider} />
+                </Route> */}
+              </Switch>
+            </div>
+          </BrowserRouter>
+
+          <MainPageFooter scaffoldAppProviders={scaffoldAppProviders} price={ethPrice} />
+        </div>
+      </InnerAppContext.Provider>
+    </LayoutContext.Provider>
   );
 };

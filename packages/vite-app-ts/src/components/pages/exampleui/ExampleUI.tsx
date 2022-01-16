@@ -134,6 +134,7 @@ export const ExampleUI: FC<IExampleUIProps> = (props) => {
               /* look how we call setPurpose AND send some value along */
               tx?.(
                 yourContract?.setPurpose('💵 Paying for this one!', {
+                  /* tslint:disable-next-line */
                   value: parseEther('0.001'),
                 })
               );

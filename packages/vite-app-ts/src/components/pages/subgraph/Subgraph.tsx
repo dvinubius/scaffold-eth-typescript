@@ -41,6 +41,7 @@ export const Subgraph: FC<ISubgraphProps> = (props) => {
   const ethersContext = useEthersContext();
   const [gasPrice] = useGasPrice(ethersContext.chainId, 'fast');
   const tx = transactor(ethComponentsSettings, ethersContext?.signer, gasPrice);
+  const yourContractFactory = useAppContracts('YourContractFactory', ethersContext.chainId);
   const yourContract = useAppContracts('YourContract', ethersContext.chainId);
 
   const EXAMPLE_GQL = `
