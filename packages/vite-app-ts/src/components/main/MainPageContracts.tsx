@@ -21,7 +21,7 @@ export const MainPageContracts: FC<IMainPageContractsProps> = (props) => {
   const ethersContext = useEthersContext();
   // const mainnetDai = useAppContracts('DAI', NETWORKS.mainnet.chainId);
   debugger;
-  const yourContract = useAppContracts('YourContract', ethersContext.chainId);
+  // const yourContract = useAppContracts('YourContract', ethersContext.chainId);
   const yourContractFactory = useAppContracts('YourContractFactory', ethersContext.chainId);
 
   if (ethersContext.account == null) {
@@ -36,12 +36,12 @@ export const MainPageContracts: FC<IMainPageContractsProps> = (props) => {
           this <Contract/> component will automatically parse your ABI
           and give you a form to interact with it locally
         ********** */}
-        <GenericContract
+        {/* <GenericContract
           contractName="YourContract"
           contract={yourContract}
           mainnetAdaptor={props.scaffoldAppProviders.mainnetAdaptor}
           blockExplorer={props.scaffoldAppProviders.targetNetwork.blockExplorer}
-        />
+        /> */}
         <GenericContract
           contractName="YourContractFactory"
           contract={yourContractFactory}

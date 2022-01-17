@@ -18,6 +18,7 @@ import {
 const CreateYourContract: FC = () => {
   const ethersContext: IEthersContext = useEthersContext();
 
+  debugger;
   const yourContractFactory = useAppContracts('YourContractFactory', ethersContext.chainId);
 
   const ethComponentsSettings = useContext(EthComponentsSettingsContext);

@@ -186,13 +186,13 @@ export const Main: FC = () => {
                     price={ethPrice}
                   />
                 </Route> */}
-                <Route path="/exampleui">
+                {/* <Route path="/exampleui">
                   <ExampleUI
                     mainnetProvider={scaffoldAppProviders.mainnetAdaptor?.provider}
                     yourCurrentBalance={yourCurrentBalance}
                     price={ethPrice}
                   />
-                </Route>
+                </Route> */}
 
                 {/* Subgraph also disabled in MainPageMenu */}
                 {/* 

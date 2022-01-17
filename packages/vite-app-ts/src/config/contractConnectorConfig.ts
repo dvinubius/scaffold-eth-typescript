@@ -22,6 +22,7 @@ import {
  */
 export const contractConnectorConfig = () => {
   try {
+    debugger;
     const result = {
       // 🙋🏽‍♂️ Add your hadrdhat contracts here
       YourContractFactory: createConnectorForHardhatContract(
@@ -30,11 +31,11 @@ export const contractConnectorConfig = () => {
         hardhatContractsJson
       ),
 
-      YourContract: createConnectorForHardhatContract(
-        'YourContract',
-        hardhatContracts.YourContract__factory,
-        hardhatContractsJson
-      ),
+      // YourContract: createConnectorForHardhatContract(
+      //   'YourContract',
+      //   hardhatContracts.YourContract__factory,
+      //   hardhatContractsJson
+      // ),
 
       // 🙋🏽‍♂️ Add your external contracts here, make sure to define the address in `externalContractsConfig.ts`
       DAI: createConnectorForExternalContract('DAI', externalContracts.DAI__factory, externalContractsAddressMap),
@@ -43,7 +44,7 @@ export const contractConnectorConfig = () => {
       // 🙋🏽‍♂️ Add your external abi here (unverified contracts)`
       // DAI: createConnectorForExternalAbi('DAI', { 1: {address: 'xxxx'}}, abi),
     } as const;
-
+    debugger;
     return result;
   } catch (e) {
     console.error(

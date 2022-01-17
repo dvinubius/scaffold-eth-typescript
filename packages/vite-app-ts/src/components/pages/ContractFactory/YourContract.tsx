@@ -127,6 +127,7 @@ const YourContract: FC<IYourContractProps> = ({ contract }) => {
                   type="default"
                   onClick={() => {
                     setPendingPurposeChange(true);
+                    debugger;
                     tx?.(yourContract?.setPurpose(purpose), (update) => {
                       if (update && (update.error || update.reason)) {
                         setPendingPurposeChange(false);
