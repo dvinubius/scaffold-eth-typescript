@@ -44,7 +44,7 @@ const ethComponentsSettings: IEthComponentsSettings = {
 /**
  * Lazy load the main app component
  */
-const MainPage = lazier(() => import('./MainPage'), 'Main');
+const MainPage = lazier(() => import('./MainPage') as any, 'Main');
 
 /**
  * ### Summary

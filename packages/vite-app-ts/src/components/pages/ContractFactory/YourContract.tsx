@@ -35,13 +35,15 @@ const YourContract: FC<IYourContractProps> = ({ contract }) => {
   const { injectableAbis } = useContext(InnerAppContext);
   const abi = injectableAbis?.YourContract;
 
-  const yourContractRaw: TAppContractTypes<'YourContract'> | undefined =
-    abi &&
-    (new BaseContract(
-      contract.address,
-      abi,
-      asEthersAdaptor(ethersContext).provider
-    ) as TAppContractTypes<'YourContract'>);
+  // const yourContractRaw: TAppContractTypes<'YourContract'> | undefined =
+  //   abi &&
+  //   (new BaseContract(
+  //     contract.address,
+  //     abi,
+  //     asEthersAdaptor(ethersContext).provider
+  //   ) as TAppContractTypes<'YourContract'>);
+  const yourContractRaw: any | undefined =
+    abi && (new BaseContract(contract.address, abi, asEthersAdaptor(ethersContext).provider) as any);
   const yourContract = signer ? yourContractRaw?.connect(signer) : yourContractRaw;
 
   const [purpose] = useContractReader(
@@ -127,7 +129,6 @@ const YourContract: FC<IYourContractProps> = ({ contract }) => {
                   type="default"
                   onClick={() => {
                     setPendingPurposeChange(true);
-                    debugger;
                     tx?.(yourContract?.setPurpose(purpose), (update) => {
                       if (update && (update.error || update.reason)) {
                         setPendingPurposeChange(false);

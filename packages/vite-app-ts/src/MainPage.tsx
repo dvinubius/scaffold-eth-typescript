@@ -79,11 +79,11 @@ export const Main: FC = () => {
   // -----------------------------
   // init contracts
   const factory = useAppContracts('YourContractFactory', ethersContext.chainId);
-  const yourContract = useAppContracts('YourContract', ethersContext.chainId);
+  // const yourContract = useAppContracts('YourContract', ethersContext.chainId);
   const mainnetDai = useAppContracts('DAI', NETWORKS.mainnet.chainId);
 
   // keep track of a variable from the contract in the local React state:
-  const purpose = useContractReader(yourContract, yourContract?.purpose, [], yourContract?.filters.SetPurpose());
+  // const purpose = useContractReader(yourContract, yourContract?.purpose, [], yourContract?.filters.SetPurpose());
   const numberOfCreated = useContractReader(
     factory,
     factory?.numberOfContracts,
@@ -92,7 +92,7 @@ export const Main: FC = () => {
   );
 
   // 📟 Listen for broadcast events`
-  const [setPurposeEvents] = useEventListener(yourContract, 'SetPurpose', 0);
+  // const [setPurposeEvents] = useEventListener(yourContract, 'SetPurpose', 0);
   const [createYourContractEvents] = useEventListener(factory, 'CreateYourContract', 0);
   const [createdContracts, setCreatedContracts] = useState<YourContractEntity[]>();
   const account = ethersContext.account;

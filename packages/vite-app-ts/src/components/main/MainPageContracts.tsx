@@ -20,7 +20,6 @@ export interface IMainPageContractsProps {
 export const MainPageContracts: FC<IMainPageContractsProps> = (props) => {
   const ethersContext = useEthersContext();
   // const mainnetDai = useAppContracts('DAI', NETWORKS.mainnet.chainId);
-  debugger;
   // const yourContract = useAppContracts('YourContract', ethersContext.chainId);
   const yourContractFactory = useAppContracts('YourContractFactory', ethersContext.chainId);
 
