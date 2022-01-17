@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { GenericContract } from 'eth-components/ant/generic-contract';
+import { GenericContract } from '~~/eth-components/ant/generic-contract';
 import { Contract } from 'ethers';
 import { useContractLoader } from 'eth-hooks';
 import { IScaffoldAppProviders } from '~~/components/main/hooks/useScaffoldAppProviders';

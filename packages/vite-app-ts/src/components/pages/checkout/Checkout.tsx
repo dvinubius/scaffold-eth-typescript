@@ -5,8 +5,8 @@ import React, { FC, ReactElement, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import StackGrid from 'react-stack-grid';
 
-import { AddressInput, EtherInput } from 'eth-components/ant';
-import { TTransactorFunc } from 'eth-components/functions';
+import { AddressInput, EtherInput } from '~~/eth-components/ant';
+import { TTransactorFunc } from '~~/eth-components/functions';
 
 export interface ICheckoutProps {
   setRoute: any;

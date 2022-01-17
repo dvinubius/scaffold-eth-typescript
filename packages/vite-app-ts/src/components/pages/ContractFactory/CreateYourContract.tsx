@@ -1,7 +1,7 @@
 import { CheckCircleOutlined, PlusOutlined, StopOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Modal, Spin } from 'antd';
-import { transactor } from 'eth-components/functions';
-import { EthComponentsSettingsContext } from 'eth-components/models';
+import { transactor } from '~~/eth-components/functions';
+import { EthComponentsSettingsContext } from '~~/eth-components/models';
 import { useGasPrice } from 'eth-hooks';
 import { useEthersContext } from 'eth-hooks/context';
 import { IEthersContext } from 'eth-hooks/models';

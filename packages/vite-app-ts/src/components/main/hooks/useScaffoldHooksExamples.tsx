@@ -4,8 +4,8 @@ import { IScaffoldAppProviders } from '~~/components/main/hooks/useScaffoldAppPr
 import { useBalance, useBlockNumber, useContractReader, useGasPrice, useSignerAddress } from 'eth-hooks';
 
 import { useEthersContext } from 'eth-hooks/context';
-import { transactor } from 'eth-components/functions';
-import { EthComponentsSettingsContext } from 'eth-components/models';
+import { transactor } from '~~/eth-components/functions';
+import { EthComponentsSettingsContext } from '~~/eth-components/models';
 import { parseEther } from '@ethersproject/units';
 import { config } from 'process';
 import { NETWORKS } from '~~/models/constants/networks';

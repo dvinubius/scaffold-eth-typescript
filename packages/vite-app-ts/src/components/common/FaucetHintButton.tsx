@@ -1,9 +1,9 @@
 import React, { FC, useContext, useMemo, useState } from 'react';
 import { Button } from 'antd';
 import { useBalance } from 'eth-hooks';
-import { transactor } from 'eth-components/functions';
+import { transactor } from '~~/eth-components/functions';
 import { parseEther } from '@ethersproject/units';
-import { EthComponentsSettingsContext } from 'eth-components/models';
+import { EthComponentsSettingsContext } from '~~/eth-components/models';
 import { IScaffoldAppProviders } from '~~/components/main/hooks/useScaffoldAppProviders';
 import { utils } from 'ethers';
 import { useEthersContext } from 'eth-hooks/context';

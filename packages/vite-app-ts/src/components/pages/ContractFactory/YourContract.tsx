@@ -1,6 +1,6 @@
 import { Button, Card, Divider, Spin } from 'antd';
-import { transactor } from 'eth-components/functions';
-import { EthComponentsSettingsContext } from 'eth-components/models';
+import { transactor } from '~~/eth-components/functions';
+import { EthComponentsSettingsContext } from '~~/eth-components/models';
 import { useContractLoader, useContractReader, useGasPrice } from 'eth-hooks';
 import { contractsContextFactory, useEthersContext } from 'eth-hooks/context';
 
@@ -12,7 +12,7 @@ import { BaseContract, ethers } from 'ethers';
 import { TAppContractTypes } from '~~/config/contractContext';
 import { asEthersAdaptor } from 'eth-hooks/functions';
 import { cardGradient, mainColWidthLarge, mainColWidthSmall, primaryColor } from '~~/styles/styles';
-import { Address } from 'eth-components/ant';
+import { Address } from '~~/eth-components/ant';
 import { remToPx } from '~~/helpers/layoutCalc';
 
 // TODO actual types

@@ -2,7 +2,7 @@ import React, { FC, useContext } from 'react';
 import { Button, Card, Descriptions } from 'antd';
 import { ArrowsAltOutlined, UserOutlined } from '@ant-design/icons';
 import { cardGradient2, mediumButtonMinWidth, softTextColor } from '~~/styles/styles';
-import { Address } from 'eth-components/ant';
+import { Address } from '~~/eth-components/ant';
 import { LayoutContext } from '~~/MainPage';
 
 // TODO actual types

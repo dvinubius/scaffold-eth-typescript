@@ -4,12 +4,12 @@ import { Button, Card, DatePicker, Divider, Input, List, Progress, Slider, Spin,
 import { Signer, Contract, BigNumber } from 'ethers';
 import React, { useState, FC, useContext } from 'react';
 
-import { Address, Balance } from 'eth-components/ant';
-import { transactor } from 'eth-components/functions';
+import { Address, Balance } from '~~/eth-components/ant';
+import { transactor } from '~~/eth-components/functions';
 import { StaticJsonRpcProvider } from '@ethersproject/providers';
 import { useEthersContext } from 'eth-hooks/context';
 import { useContractLoader, useContractReader, useEventListener, useGasPrice } from 'eth-hooks';
-import { EthComponentsSettingsContext } from 'eth-components/models';
+import { EthComponentsSettingsContext } from '~~/eth-components/models';
 import { useAppContracts, useAppContractsContext } from '~~/config/contractContext';
 import { SetPurposeEvent, YourContract } from '~~/generated/contract-types/YourContract';
 

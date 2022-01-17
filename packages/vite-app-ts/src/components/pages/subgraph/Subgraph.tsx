@@ -1,10 +1,10 @@
 import { Button, Input, Table, Typography } from 'antd';
 import 'graphiql/graphiql.min.css';
 import React, { FC, lazy, ReactElement, Suspense, useContext, useState } from 'react';
-import { transactor } from 'eth-components/functions';
+import { transactor } from '~~/eth-components/functions';
 
-import { Address } from 'eth-components/ant';
-import { EthComponentsSettingsContext } from 'eth-components/models';
+import { Address } from '~~/eth-components/ant';
+import { EthComponentsSettingsContext } from '~~/eth-components/models';
 import { useGasPrice } from 'eth-hooks';
 import { useEthersContext } from 'eth-hooks/context';
 import { useAppContracts } from '~~/config/contractContext';
