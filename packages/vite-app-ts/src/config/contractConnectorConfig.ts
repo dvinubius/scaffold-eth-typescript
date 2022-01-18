@@ -30,11 +30,15 @@ export const contractConnectorConfig = () => {
         hardhatContractsJson
       ),
 
-      // YourContract: createConnectorForHardhatContract(
-      //   'YourContract',
-      //   hardhatContracts.YourContract__factory,
-      //   hardhatContractsJson
-      // ),
+      // uncomment this and add a deploy script for YourContract
+      // in packages/hardhat-ts/deploy
+      // if you want strong typing and autocomplete for YourContract
+
+      YourContract: createConnectorForHardhatContract(
+        'YourContract',
+        hardhatContracts.YourContract__factory,
+        hardhatContractsJson
+      ),
 
       // 🙋🏽‍♂️ Add your external contracts here, make sure to define the address in `externalContractsConfig.ts`
       DAI: createConnectorForExternalContract('DAI', externalContracts.DAI__factory, externalContractsAddressMap),

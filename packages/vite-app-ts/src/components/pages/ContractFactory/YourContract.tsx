@@ -14,6 +14,7 @@ import { asEthersAdaptor } from 'eth-hooks/functions';
 import { cardGradient, mainColWidthLarge, mainColWidthSmall, primaryColor } from '~~/styles/styles';
 import { Address } from '~~/eth-components/ant';
 import { remToPx } from '~~/helpers/layoutCalc';
+import { EventsDisplay } from './EventsDisplay';
 
 // TODO actual types
 export interface IYourContractProps {
@@ -151,14 +152,8 @@ const YourContract: FC<IYourContractProps> = ({ contract }) => {
               ))}
             </div>
           )}
-          {/* <Divider />
-          <CustomEvents
-            contractName="YourContract"
-            contracts={readContracts}
-            eventName="SetPurpose"
-            localProvider={localProvider}
-            startBlock={1}
-          /> */}
+          <Divider />
+          {/* <EventsDisplay contract={yourContract} eventName="SetPurpose" /> */}
         </div>
       </Card>
     </div>

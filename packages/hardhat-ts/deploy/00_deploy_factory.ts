@@ -12,6 +12,14 @@ const func: DeployFunction = async (hre: HardhatRuntimeEnvironment) => {
     log: true,
   });
 
+  // UNCOMMENT if you want to deploy a standalone YourContract instance
+  // await deploy('YourContract', {
+  //   // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
+  //   from: deployer,
+  //   args: ['Codalot is my purpose'],
+  //   log: true,
+  // });
+
   /*
     // Getting a previously deployed contract
     const YourContract = await ethers.getContract("YourContract", deployer);
@@ -21,7 +29,10 @@ const func: DeployFunction = async (hre: HardhatRuntimeEnvironment) => {
   */
 };
 export default func;
-func.tags = ['YourContractFactory', 'YourContract'];
+func.tags = [
+  'YourContractFactory',
+  // 'YourContract' // uncomment fi you are also deploying a standalone YourContract instance
+];
 
 /*
 Tenderly verification

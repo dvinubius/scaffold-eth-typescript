@@ -1,9 +1,13 @@
 import React, { FC, useContext } from 'react';
 import { Button, Card, Descriptions } from 'antd';
 import { ArrowsAltOutlined, UserOutlined } from '@ant-design/icons';
-import { cardGradient2, mediumButtonMinWidth, softTextColor } from '~~/styles/styles';
+import { cardGradient2, mediumButtonMinWidth, primaryColor, softTextColor } from '~~/styles/styles';
 import { Address } from '~~/eth-components/ant';
-import { LayoutContext } from '~~/MainPage';
+import { InnerAppContext, LayoutContext } from '~~/MainPage';
+import { BaseContract } from 'ethers';
+import { asEthersAdaptor } from 'eth-hooks/functions';
+import { useEthersContext } from 'eth-hooks/context';
+import { useContractReader } from 'eth-hooks';
 
 // TODO actual types
 export interface IContractItemProps {
@@ -12,44 +16,45 @@ export interface IContractItemProps {
 }
 
 const ContractItem: FC<IContractItemProps> = ({ openContract, contract }) => {
-  // const { localChainId, localProvider, userAddress, injectableAbis } = useContext(AppContext);
-  // const abi = injectableAbis.YourContract;
-  /**
-   * contractConfig not from props,
-   * we create a copy in which we inject this particular contract
-   **/
-  // const contractConfig = getContractConfigWithInjected("YourContract", abi, contract.address, localChainId);
-  // const readContracts = useContractLoader(localProvider, contractConfig);
-  // const owner = useContractReader(readContracts, "YourContract", "owner");
-  // console.log("owner:", owner);
+  // ----------- fetch owner data ---------- //
+
+  // const { injectableAbis } = useContext(InnerAppContext);
+  // const abi = injectableAbis?.YourContract;
+  // const ethersContext = useEthersContext();
+
+  // const yourContract: any | undefined =
+  //   abi && (new BaseContract(contract.address, abi, asEthersAdaptor(ethersContext).provider) as any);
+
+  // const [owner] = useContractReader(yourContract, yourContract?.owner, []);
+
+  // console.log('owner:', owner);
+  // const ownerLabel = 'Owner';
+
+  // ----------- mark the owner ---------- //
 
   // const ownerMark =
-  //   owner === userAddress ? (
-  //     <div
+  //   owner === ethersContext.account ? (
+  //     <UserOutlined
   //       style={{
-  //         position: "absolute",
-  //         right: "1rem",
-  //         top: "50%",
-  //         transform: "translateY(calc(-50% - 2px))",
+  //         color: primaryColor,
+  //         background: 'hsla(209deg, 100%, 92%, 1)',
+  //         borderRadius: '50%',
+  //         width: '1rem',
+  //         height: '1rem',
+  //         display: 'flex',
+  //         alignItems: 'center',
+  //         justifyContent: 'center',
+  //         border: `1px solid ${primaryColor}`,
   //       }}
-  //     >
-  //       <UserOutlined
-  //         style={{
-  //           color: primaryColor,
-  //           background: "hsla(209deg, 100%, 92%, 1)",
-  //           borderRadius: "50%",
-  //           width: "1.25rem",
-  //           height: "1.25rem",
-  //           display: "flex",
-  //           alignItems: "center",
-  //           justifyContent: "center",
-  //           border: `1px solid ${primaryColor}`,
-  //         }}
-  //       />
-  //     </div>
+  //     />
   //   ) : (
-  //     ""
+  //     ''
   //   );
+  // const ownerLabel = (
+  //   <div className="flex-center-reg" style={{ gap: '0.25rem' }}>
+  //     Owner {ownerMark}
+  //   </div>
+  // );
 
   const { widthAboveContractItemFit } = useContext(LayoutContext);
 
@@ -124,29 +129,27 @@ const ContractItem: FC<IContractItemProps> = ({ openContract, contract }) => {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              width: '100%',
+              width: 'max-content',
+              margin: 'auto',
             }}
             span={descriptionSpan}>
             <Address fontSize={14} address={contract.creator} />
           </Descriptions.Item>
           {/* <Descriptions.Item
-            label="Owner"
+            label={ownerLabel}
             labelStyle={{ color: softTextColor }}
             contentStyle={{
-              padding: "0 1rem",
+              padding: '0 1rem',
               height: cellHeight,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              width: "100%",
-              position: "relative",
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              margin: 'auto',
+              width: 'max-content',
+              position: 'relative',
             }}
-            span={descriptionSpan}
-          >
-            <CustomAddress fontSize={14} value={owner} />
-            {
-              // ownerMark
-            }
+            span={descriptionSpan}>
+            <Address fontSize={14} address={owner} />
           </Descriptions.Item> */}
         </Descriptions>
       </div>
