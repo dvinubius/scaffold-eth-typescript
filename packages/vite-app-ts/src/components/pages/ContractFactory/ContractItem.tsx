@@ -92,6 +92,7 @@ const ContractItem: FC<IContractItemProps> = ({ openContract, contract }) => {
             <Address fontSize={18} address={contract.address} />
           </div>
           <Button
+            className="inline-flex-center-imp"
             size="large"
             style={{
               fontSize: '1rem',

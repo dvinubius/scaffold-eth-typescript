@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500&family=Roboto+Mono:wght@300;400&display=swap');
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
@@ -51,4 +52,35 @@ code {
 
 button {
   font-size: calc(10px + 2vmin);
+}
+
+.mono-nice {
+  font-family: 'Roboto Mono', monospace;
+}
+
+.inline-flex-center-imp {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+.flex-center-imp {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.inline-flex-center-reg {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.flex-center-reg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-h-reg {
+  display: flex;
+  align-items: center;
 }

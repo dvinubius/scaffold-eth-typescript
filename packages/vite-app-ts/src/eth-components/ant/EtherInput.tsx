@@ -1,3 +1,4 @@
+import { SwapOutlined } from '@ant-design/icons';
 import { Input } from 'antd';
 import React, { FC, ReactNode, useEffect, useState } from 'react';
 
@@ -34,6 +35,9 @@ interface IEtherInputProps {
   value: string;
   placeholder?: string;
   onChange: (value: string) => void;
+  etherMode?: boolean;
+  wrapperStyle?: any;
+  switchWidth?: number;
 }
 
 /**
@@ -48,19 +52,26 @@ interface IEtherInputProps {
  * @returns (FC)
  */
 export const EtherInput: FC<IEtherInputProps> = (props) => {
-  const [mode, setMode] = useState(props.price ? 'USD' : 'ETH');
+  const [mode, setMode] = useState(props.etherMode ? 'ETH' : props.price ? 'USD' : 'ETH');
   const [display, setDisplay] = useState<string>();
   const [value, setValue] = useState<string>();
 
   const currentValue: string | undefined = props.value ? props.value : value;
 
   const option = (title: string): ReactNode => {
-    if (props?.price != null) {
+    if (props?.price == null) {
       return <></>;
     }
+
+    const titleWrap = (
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.25rem' }}>
+        <SwapOutlined />
+        <span>{title}</span>
+      </div>
+    );
     return (
       <div
-        style={{ cursor: 'pointer' }}
+        style={{ cursor: 'pointer', width: props.switchWidth ?? '3.5rem' }}
         onClick={(): void => {
           if (mode === 'USD') {
             setMode('ETH');
@@ -75,7 +86,7 @@ export const EtherInput: FC<IEtherInputProps> = (props) => {
             }
           }
         }}>
-        {title}
+        {titleWrap}
       </div>
     );
   };
@@ -84,10 +95,10 @@ export const EtherInput: FC<IEtherInputProps> = (props) => {
   let addonAfter;
   if (mode === 'USD') {
     prefix = '$';
-    addonAfter = option('USD 🔀');
+    addonAfter = option('USD');
   } else {
     prefix = 'Ξ';
-    addonAfter = option('ETH 🔀');
+    addonAfter = option('ETH');
   }
 
   useEffect((): void => {

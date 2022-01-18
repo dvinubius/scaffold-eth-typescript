@@ -103,7 +103,7 @@ export const Main: FC = () => {
           .map((event) => ({
             address: event.args.contractAddress,
             name: event.args.name,
-            time: new Date(event.args.timestamp.toNumber() * 1000),
+            time: new Date(event.args.timestamp?.toNumber() * 1000),
             creator: event.args.creator,
             // add any other available args here
           }))

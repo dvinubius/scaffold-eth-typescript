@@ -132,7 +132,13 @@ export const Address: FC<IAddressProps> = ({ minimized = false, punkBlockie = fa
     return (
       <span className="Address" style={{ display: 'inline-flex', alignItems: 'center' }}>
         <Blockies seed={address.toLowerCase()} size={8} scale={props.fontSize ? props.fontSize / 7 : 4} />
-        <span style={{ verticalAlign: 'middle', paddingLeft: 5, fontSize: props.fontSize ? props.fontSize : 28 }}>
+        <span
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            paddingLeft: 5,
+            fontSize: props.fontSize ? props.fontSize : 28,
+          }}>
           {text}
         </span>
       </span>

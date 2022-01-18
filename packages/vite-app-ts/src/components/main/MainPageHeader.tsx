@@ -7,6 +7,7 @@ import { IScaffoldAppProviders } from '~~/components/main/hooks/useScaffoldAppPr
 import { useEthersContext } from 'eth-hooks/context';
 import { useGasPrice } from 'eth-hooks';
 import { getNetworkInfo } from '~~/functions';
+import { swapGradient } from '~~/styles/styles';
 
 // displays a page header
 export interface IMainPageHeaderProps {
@@ -31,44 +32,20 @@ export const MainPageHeader: FC<IMainPageHeaderProps> = (props) => {
    */
   const left = (
     <>
-      <div>
+      <div
+        style={{
+          borderRight: '1px solid #efefef',
+          borderBottom: '1px solid #efefef',
+          background: swapGradient,
+        }}>
         <PageHeader
-          title="🏰 BuidlGuidl"
-          subTitle={
-            <span>
-              v2.1 - [
-              <a href="https://youtu.be/aYMj00JoIug" target="_blank" rel="noreferrer">
-                <span style={{ marginRight: 4 }}>🎥 </span> 8min speed run
-              </a>
-              ] - [
-              <a href="https://trello.com/b/ppbUs796/buidlguidlcom-idea-board" target="_blank" rel="noreferrer">
-                <span style={{ marginRight: 4 }}>💡 </span> trello
-              </a>
-              ]{' '}
-            </span>
-          }
-          style={{ cursor: 'pointer' }}
+          title="🏗 Scaffold-Eth"
+          style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', height: '57px', padding: '1rem' }}
+          subTitle={<span> Factory &amp; Contract Manager</span>}
         />
       </div>
       {props.children}
     </>
-  );
-
-  /**
-   * 👨‍💼 Your account is in the top right with a wallet at connect options
-   */
-  const right = (
-    <div style={{ position: 'fixed', textAlign: 'right', right: 0, top: 0, padding: 10, zIndex: 1 }}>
-      <Account
-        createLoginConnector={props.scaffoldAppProviders.createLoginConnector}
-        ensProvider={props.scaffoldAppProviders.mainnetAdaptor?.provider}
-        price={props.price}
-        blockExplorer={props.scaffoldAppProviders.targetNetwork.blockExplorer}
-        hasContextConnect={true}
-      />
-      <FaucetHintButton scaffoldAppProviders={props.scaffoldAppProviders} gasPrice={gasPrice} />
-      {props.children}
-    </div>
   );
 
   /**
@@ -78,12 +55,17 @@ export const MainPageHeader: FC<IMainPageHeaderProps> = (props) => {
   if (selectedChainId && selectedChainId != props.scaffoldAppProviders.targetNetwork.chainId) {
     const description = (
       <div>
-        You have <b>{getNetwork(selectedChainId)?.name}</b> selected and you need to be on{' '}
-        <b>{getNetwork(props.scaffoldAppProviders.targetNetwork)?.name ?? 'UNKNOWN'}</b>.
+        <p style={{ margin: 0 }}>
+          You have <b>{getNetwork(selectedChainId)?.name}</b> selected
+        </p>
+        <p style={{ margin: 0 }}>
+          You need to be on <b>{getNetwork(props.scaffoldAppProviders.targetNetwork)?.name ?? 'UNKNOWN'}</b>
+        </p>
       </div>
     );
     networkDisplay = (
-      <div style={{ zIndex: 2, position: 'absolute', right: 0, top: 60, padding: 16 }}>
+      <div
+        style={{ zIndex: 2, position: 'absolute', right: 0, top: 60, padding: 16, textAlign: 'left', width: '22rem' }}>
         <Alert message="⚠️ Wrong Network" description={description} type="error" closable={false} />
       </div>
     );
@@ -91,21 +73,53 @@ export const MainPageHeader: FC<IMainPageHeaderProps> = (props) => {
     networkDisplay = (
       <div
         style={{
-          position: 'absolute',
-          right: 18,
-          top: 54,
-          padding: 10,
-          color: props.scaffoldAppProviders.targetNetwork.color,
+          fontSize: '0.875rem',
+          padding: '0.125rem 1rem 0.125rem 0.75rem',
+          backgroundColor: 'hsla(0,0%,100%, 0.9)',
+          height: '30px',
+          display: 'flex',
+          alignItems: 'center',
+          color: 'rgb(24, 144, 255)',
+          borderTop: '1px solid #ccc',
+          borderLeft: '1px solid #ccc',
+          borderBottom: '1px solid #ccc',
         }}>
         {props.scaffoldAppProviders.targetNetwork.name}
       </div>
     );
   }
 
+  /**
+   * 👨‍💼 Your account is in the top right with a wallet at connect options
+   */
+  const right = (
+    <div
+      className="flex-h-reg"
+      style={{
+        position: 'fixed',
+        textAlign: 'right',
+        right: 0,
+        top: 0,
+        zIndex: 1,
+        padding: '0.5rem 1rem',
+        height: 58,
+      }}>
+      <Account
+        createLoginConnector={props.scaffoldAppProviders.createLoginConnector}
+        ensProvider={props.scaffoldAppProviders.mainnetAdaptor?.provider}
+        price={props.price}
+        blockExplorer={props.scaffoldAppProviders.targetNetwork.blockExplorer}
+        hasContextConnect={true}
+        connectedNetworkDisplay={networkDisplay}
+      />
+      <FaucetHintButton scaffoldAppProviders={props.scaffoldAppProviders} gasPrice={gasPrice} />
+      {props.children}
+    </div>
+  );
+
   return (
     <>
       {left}
-      {networkDisplay}
       {right}
     </>
   );

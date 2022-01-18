@@ -92,7 +92,7 @@ const CreateYourContract: FC = () => {
 
   return (
     <div>
-      <Button type="primary" size="large" onClick={() => setVisibleModal(true)}>
+      <Button type="primary" size="large" onClick={() => setVisibleModal(true)} className="flex-center-imp">
         <PlusOutlined />
         New Contract
       </Button>

@@ -24,8 +24,12 @@ export const MainPageFooter: FC<IMainPageFooterProps> = (props) => {
   // Faucet Tx can be used to send funds from the faucet
   let faucetAvailable = getFaucetAvailable(props.scaffoldAppProviders, ethersContext);
 
+  const hasLocalProviderSigner =
+    faucetAvailable && props.scaffoldAppProviders?.mainnetAdaptor && props.scaffoldAppProviders?.localAdaptor;
+
   const left = (
     <div
+      className="hud hudBottom"
       style={{
         position: 'fixed',
         textAlign: 'left',
@@ -33,13 +37,12 @@ export const MainPageFooter: FC<IMainPageFooterProps> = (props) => {
         bottom: 20,
         padding: 10,
       }}>
-      <Row align="middle" gutter={[4, 4]}>
-        <Col span={8}>
+      <div style={{ display: 'flex', gap: '.25rem' }}>
+        <div>
           <Ramp price={props.price} address={ethersContext?.account ?? ''} networks={NETWORKS} />
-        </Col>
+        </div>
 
-        <Col
-          span={8}
+        <div
           style={{
             textAlign: 'center',
             opacity: 0.8,
@@ -50,9 +53,8 @@ export const MainPageFooter: FC<IMainPageFooterProps> = (props) => {
             provider={ethersContext.provider}
             speed="average"
           />
-        </Col>
-        <Col
-          span={8}
+        </div>
+        <div
           style={{
             textAlign: 'center',
             opacity: 1,
@@ -73,27 +75,23 @@ export const MainPageFooter: FC<IMainPageFooterProps> = (props) => {
             </span>
             Support
           </Button>
-        </Col>
-      </Row>
+        </div>
+      </div>
 
-      <Row align="middle" gutter={[4, 4]}>
-        <Col span={24}>
-          {
-            /*  if the local provider has a signer, let's show the faucet:  */
-            faucetAvailable &&
-            props.scaffoldAppProviders?.mainnetAdaptor &&
-            props.scaffoldAppProviders?.localAdaptor ? (
-              <Faucet
-                localAdaptor={props.scaffoldAppProviders.localAdaptor}
-                price={props.price}
-                mainnetAdaptor={props.scaffoldAppProviders.mainnetAdaptor}
-              />
-            ) : (
-              <></>
-            )
-          }
-        </Col>
-      </Row>
+      <div style={{ marginTop: '0.25rem' }}>
+        {
+          /*  if the local provider has a signer, let's show the faucet:  */
+          hasLocalProviderSigner ? (
+            <Faucet
+              localAdaptor={props.scaffoldAppProviders.localAdaptor}
+              price={props.price}
+              mainnetAdaptor={props.scaffoldAppProviders.mainnetAdaptor}
+            />
+          ) : (
+            <></>
+          )
+        }
+      </div>
     </div>
   );
 

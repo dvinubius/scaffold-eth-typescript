@@ -76,7 +76,7 @@ export const Faucet: FC<IFaucetProps> = (props) => {
   return (
     <span>
       <Input
-        size="large"
+        // size="large"
         placeholder={props.placeholder ? props.placeholder : 'local faucet'}
         prefix={blockie}
         // value={address}

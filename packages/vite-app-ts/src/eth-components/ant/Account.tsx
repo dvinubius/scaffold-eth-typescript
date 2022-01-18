@@ -1,16 +1,19 @@
 import { StaticJsonRpcProvider } from '@ethersproject/providers';
-import { Button } from 'antd';
+import { Button, Popover } from 'antd';
 import { useSignerAddress } from 'eth-hooks';
 import { useEthersContext, useBlockNumberContext } from 'eth-hooks/context';
 import { TCreateEthersModalConnector } from 'eth-hooks/models';
 import { Signer } from 'ethers';
-import React, { FC, useState } from 'react';
+import React, { FC, ReactElement, useState } from 'react';
 import { useThemeSwitcher } from 'react-css-theme-switcher';
 import invariant from 'ts-invariant';
 import { useDebounce } from 'use-debounce';
 import { useIsMounted } from 'usehooks-ts';
+import { useWindowWidth } from '@react-hook/window-size';
 
 import { Address, Balance, Wallet } from '.';
+import { remToPx } from '../../helpers/layoutCalc';
+import { UserOutlined } from '@ant-design/icons';
 
 export interface IAccountProps {
   ensProvider: StaticJsonRpcProvider | undefined;
@@ -28,6 +31,9 @@ export interface IAccountProps {
   fontSize?: number;
   blockExplorer: string;
   price: number;
+  largeLogInOut?: boolean;
+  breakPointCompress?: number;
+  connectedNetworkDisplay: ReactElement;
 }
 
 /**
@@ -101,9 +107,8 @@ export const Account: FC<IAccountProps> = (props: IAccountProps) => {
         <Button
           loading={loadingButtonDebounce.isPending()}
           key="loginbutton"
-          style={{ verticalAlign: 'top', marginLeft: 8, marginTop: 4 }}
           shape="round"
-          size="large"
+          size={props.largeLogInOut ? 'large' : 'middle'}
           onClick={handleLoginClick}>
           connect
         </Button>
@@ -116,9 +121,8 @@ export const Account: FC<IAccountProps> = (props: IAccountProps) => {
       {!showLoadModal && props.createLoginConnector && (
         <Button
           key="logoutbutton"
-          style={{ verticalAlign: 'top', marginLeft: 8, marginTop: 4 }}
           shape="round"
-          size="large"
+          size={props.largeLogInOut ? 'large' : 'middle'}
           onClick={ethersContext.disconnectModal}>
           logout
         </Button>
@@ -128,41 +132,72 @@ export const Account: FC<IAccountProps> = (props: IAccountProps) => {
 
   const { currentTheme } = useThemeSwitcher();
 
-  const display = (
-    <span>
+  const fullDisplay = (
+    <div style={{ display: 'inline-flex', alignItems: 'center' }}>
       {resolvedAddress != null && (
         <>
           <Address
             address={resolvedAddress}
-            fontSize={props.fontSize}
+            fontSize={props.fontSize ?? 18}
             ensProvider={props.ensProvider}
             blockExplorer={props.blockExplorer}
             minimized={false}
           />
-          <Balance address={resolvedAddress} price={props.price} />
-          {resolvedSigner && (
-            <Wallet
-              signer={resolvedSigner}
-              ensProvider={props.ensProvider}
-              localProvider={props.localProvider}
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+            }}>
+            <Balance
+              address={resolvedAddress}
               price={props.price}
-              color={currentTheme === 'light' ? '#1890ff' : '#2caad9'}
+              fontSize={remToPx(1.125)}
+              padding=".25rem 0 .25rem .5rem"
             />
-          )}
+            {resolvedSigner && (
+              <Wallet
+                fontSize={remToPx(1.5)}
+                modalFontSize={remToPx(1.25)}
+                signer={resolvedSigner}
+                ensProvider={props.ensProvider}
+                localProvider={props.localProvider}
+                price={props.price}
+                color={currentTheme === 'light' ? '#1890ff' : '#2caad9'}
+              />
+            )}
+          </div>
         </>
       )}
-    </span>
+    </div>
+  );
+
+  const isSmallScreen = useWindowWidth() < (props.breakPointCompress ?? 850);
+  const display = isSmallScreen ? (
+    <Popover content={fullDisplay} trigger="click">
+      <Button style={{ display: 'flex', alignItems: 'center' }}>
+        <UserOutlined />
+      </Button>
+    </Popover>
+  ) : (
+    fullDisplay
+  );
+
+  const currentNetwork = props.connectedNetworkDisplay && (
+    <div style={{ marginRight: '-0.5rem' }}>{props.connectedNetworkDisplay}</div>
   );
 
   return (
-    <div>
+    <div style={{ display: 'flex', alignItems: 'center' }}>
       {display}
-      {props.hasContextConnect && (
-        <>
-          {loadModalButton}
-          {logoutButton}
-        </>
-      )}
+      <div style={{ display: 'flex', alignItems: 'center', marginLeft: '0.5rem' }}>
+        {currentNetwork}
+        {props.hasContextConnect && (
+          <>
+            {loadModalButton}
+            {logoutButton}
+          </>
+        )}
+      </div>
     </div>
   );
 };
