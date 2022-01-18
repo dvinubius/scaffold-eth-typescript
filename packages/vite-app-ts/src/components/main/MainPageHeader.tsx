@@ -7,7 +7,7 @@ import { IScaffoldAppProviders } from '~~/components/main/hooks/useScaffoldAppPr
 import { useEthersContext } from 'eth-hooks/context';
 import { useGasPrice } from 'eth-hooks';
 import { getNetworkInfo } from '~~/functions';
-import { swapGradient } from '~~/styles/styles';
+import { breakPointAccountDisplayMinimize, swapGradient } from '~~/styles/styles';
 
 // displays a page header
 export interface IMainPageHeaderProps {
@@ -111,6 +111,7 @@ export const MainPageHeader: FC<IMainPageHeaderProps> = (props) => {
         blockExplorer={props.scaffoldAppProviders.targetNetwork.blockExplorer}
         hasContextConnect={true}
         connectedNetworkDisplay={networkDisplay}
+        breakPointCompress={breakPointAccountDisplayMinimize}
       />
       <FaucetHintButton scaffoldAppProviders={props.scaffoldAppProviders} gasPrice={gasPrice} />
       {props.children}

@@ -25,6 +25,7 @@ interface IGenericContract<GContract extends BaseContract> {
   show?: string[];
   tokenPrice?: number;
   blockExplorer: string;
+  padding?: string | number;
 }
 
 export const GenericContract = <GContract extends BaseContract>(
@@ -90,7 +91,7 @@ export const GenericContract = <GContract extends BaseContract>(
     (props.contract != null && props.contract?.provider == null);
 
   return (
-    <div style={{ margin: 'auto', width: '70vw' }}>
+    <div style={{ margin: 'auto', width: '70vw', padding: props.padding ?? '0 0 8rem' }}>
       <Card
         title={
           <div>
@@ -104,6 +105,7 @@ export const GenericContract = <GContract extends BaseContract>(
                 blockExplorer={props.blockExplorer}
                 fontSize={fontSize}
                 hasContextConnect={false}
+                hideWallet
               />
               {props.addressElement}
             </div>

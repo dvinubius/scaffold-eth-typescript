@@ -33,7 +33,8 @@ export interface IAccountProps {
   price: number;
   largeLogInOut?: boolean;
   breakPointCompress?: number;
-  connectedNetworkDisplay: ReactElement;
+  connectedNetworkDisplay?: ReactElement;
+  hideWallet?: boolean;
 }
 
 /**
@@ -154,7 +155,7 @@ export const Account: FC<IAccountProps> = (props: IAccountProps) => {
               fontSize={remToPx(1.125)}
               padding=".25rem 0 .25rem .5rem"
             />
-            {resolvedSigner && (
+            {resolvedSigner && !props.hideWallet && (
               <Wallet
                 fontSize={remToPx(1.5)}
                 modalFontSize={remToPx(1.25)}
@@ -171,7 +172,7 @@ export const Account: FC<IAccountProps> = (props: IAccountProps) => {
     </div>
   );
 
-  const isSmallScreen = useWindowWidth() < (props.breakPointCompress ?? 850);
+  const isSmallScreen = useWindowWidth() < (props.breakPointCompress ?? 0);
   const display = isSmallScreen ? (
     <Popover content={fullDisplay} trigger="click">
       <Button style={{ display: 'flex', alignItems: 'center' }}>

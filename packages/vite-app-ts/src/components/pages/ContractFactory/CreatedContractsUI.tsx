@@ -39,7 +39,11 @@ const CreatedContractsUI: FC = () => {
         )}
         {openedContract && (
           <div style={{ marginRight: 'auto' }}>
-            <Button onClick={handleBack} size="large" style={{ minWidth: mediumButtonMinWidth }}>
+            <Button
+              className="flex-center-imp"
+              onClick={handleBack}
+              size="large"
+              style={{ minWidth: mediumButtonMinWidth }}>
               <LeftOutlined /> Back
             </Button>
           </div>

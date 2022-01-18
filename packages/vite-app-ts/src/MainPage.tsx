@@ -101,10 +101,11 @@ export const Main: FC = () => {
       setCreatedContracts(
         createYourContractEvents
           .map((event) => ({
-            address: event.args.contractAddress,
-            name: event.args.name,
-            time: new Date(event.args.timestamp?.toNumber() * 1000),
-            creator: event.args.creator,
+            // 0 - id
+            address: event.args[1],
+            creator: event.args[2],
+            name: event.args[3],
+            time: new Date(event.args[4]?.toNumber() * 1000),
             // add any other available args here
           }))
           .reverse() // most recent first
@@ -175,7 +176,9 @@ export const Main: FC = () => {
                   </div>
                 </Route>
                 <Route exact path="/Debug">
-                  <MainPageContracts scaffoldAppProviders={scaffoldAppProviders} />
+                  <div className="AppCenteredCol">
+                    <MainPageContracts scaffoldAppProviders={scaffoldAppProviders} />
+                  </div>
                 </Route>
                 {/* you can add routes here like the below examlples */}
                 {/* <Route path="/hints">
